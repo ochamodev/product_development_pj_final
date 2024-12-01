@@ -1,3 +1,6 @@
+from io import BytesIO
+
+from PIL import Image
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict
@@ -22,9 +25,12 @@ app.add_middleware(
 @app.post("/identify")
 async def identify(image: UploadFile) -> Dict[str, str]:
 
-
-    image_tensor = preprocess_image(image.file)
+    contents = await image.read()
+    image_tensor = await preprocess_image(contents)
     result = predict(image_tensor)
+    output_path = f"uploaded_images/{image.filename}"
+    #img = Image.open(BytesIO(contents))
+    #img.save(output_path)
 
     # Retornar la respuesta
     return result

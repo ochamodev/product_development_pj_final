@@ -30,7 +30,8 @@ class WasteClassificationModel(nn.Module):
 
 # Load PyTorch model
 pt_model = WasteClassificationModel()
-pt_model.load_state_dict(torch.load("../model/waste_classification_model.pt", map_location=torch.device('cpu')))
+state_dict = torch.load("../model/waste_classification_model.pt", map_location=torch.device('cpu'), weights_only=True)
+pt_model.load_state_dict(state_dict)
 pt_model.eval()
 
 # Subcategory and category mapping
