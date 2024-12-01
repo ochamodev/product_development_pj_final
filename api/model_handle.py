@@ -3,15 +3,34 @@ MODEL HANDLER
 '''
 
 import torch
+from torch import nn
 import numpy as np
 
 
-# Load TensorFlow/Keras models
-keras_model1 = tf.keras.models.load_model("../model/fine_tune_resnet.keras")
-keras_model2 = tf.keras.models.load_model("../model/fine_tune_resnet_epochs40.keras")
+class WasteClassificationModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        from torchvision.models import mobilenet_v3_small
+        from torchvision.models.feature_extraction import create_feature_extractor
+        
+        self.mobnet = mobilenet_v3_small(weights="IMAGENET1K_V1")
+        self.feature_extraction = create_feature_extractor(self.mobnet, return_nodes={'features.12': 'mob_feature'})
+        self.conv1 = nn.Conv2d(576, 300, 3)
+        self.fc1 = nn.Linear(10800, 30)
+        self.dr = nn.Dropout()
+
+    def forward(self, x):
+        feature_layer = self.feature_extraction(x)['mob_feature']
+        x = nn.functional.relu(self.conv1(feature_layer))
+        x = x.flatten(start_dim=1)
+        x = self.dr(x)
+        output = self.fc1(x)
+        return output
+
 
 # Load PyTorch model
-pt_model = torch.load("../model/waste_classification_model.pt")
+pt_model = WasteClassificationModel()
+pt_model.load_state_dict(torch.load("../model/waste_classification_model.pt", map_location=torch.device('cpu')))
 pt_model.eval()
 
 # Subcategory and category mapping
