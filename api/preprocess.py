@@ -4,11 +4,12 @@ PREPROCESS PIPELINE
 
 # library import
 from PIL import Image
-import torch
+from io import BytesIO
 import torchvision.transforms as transforms
 
-def preprocess_image(image_file):
-    image = Image.open(image_file).convert("RGB")
+async def preprocess_image(image_file):
+    contents = await image_file.read()
+    image = Image.open(BytesIO(contents)).convert("RGB")
     transform = transforms.Compose([
         transforms.Resize((224, 224)),  # Resize to 224x224
         transforms.ToTensor(),          # Convert to tensor and normalize to [0, 1]
