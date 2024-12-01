@@ -4,20 +4,15 @@ PREPROCESS PIPELINE
 
 # library import
 from PIL import Image
-import numpy as np
 import torch
+import torchvision.transforms as transforms
 
 def preprocess_image(image_file):
     image = Image.open(image_file).convert("RGB")
-    
-    # resize and normalize
-    image = image.resize((224, 224))
-    image_array = np.array(image) / 255.0
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),  # Resize to 224x224
+        transforms.ToTensor(),          # Convert to tensor and normalize to [0, 1]
+    ])
+    image_tensor = transform(image).unsqueeze(0)  # Add batch dimension
 
-    # convert into tensor for pytorch models
-    image_tensor = torch.tensor(image_array).permute(2, 0, 1).unsqueeze(0).float()
-
-    # convert into array for tf.keras models
-    image_array_tf = np.expand_dims(image_array, axis=0)
-    
-    return image_array_tf, image_tensor
+    return image_tensor

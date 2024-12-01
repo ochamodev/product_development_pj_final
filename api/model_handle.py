@@ -16,13 +16,53 @@ pt_model.eval()
 
 # Subcategory and category mapping
 CLASS_MAPPING = {
-    1: "aerosol_cans", 2: "aluminum_food_cans", 3: "aluminum_soda_cans", 4: "cardboard_boxes", 5: "cardboard_packaging", 
-    6: "clothing", 7: "coffee_grounds", 8: "disposable_plastic_cutlery", 9: "eggshells", 10: "food_waste", 
-    11: "glass_beverage_bottles", 12: "glass_cosmetic_containers", 13: "glass_food_jars", 14: "magazines", 15: "newspaper", 
-    16: "office_paper", 17: "paper_cups", 18: "plastic_cup_lids", 19: "plastic_detergent_bottles", 20: "plastic_food_containers", 
-    21: "plastic_shopping_bags", 22: "plastic_soda_bottles", 23: "plastic_straws", 24: "plastic_trash_bags", 25: "plastic_water_bottles", 
-    26: "shoes", 27: "steel_food_cans", 28: "styrofoam_cups", 29: "styrofoam_food_containers", 30: "tea_bags"
+    1: {"categoria": "Inorgánico", "nombre": "Aerosoles"},
+    2: {"categoria": "Inorgánico", "nombre": "Latas de comida de aluminio"},
+    3: {"categoria": "Inorgánico", "nombre": "Latas de refresco de aluminio"},
+    4: {"categoria": "Orgánico", "nombre": "Cajas de cartón"},
+    5: {"categoria": "Orgánico", "nombre": "Empaques de cartón"},
+    6: {"categoria": "Inorgánico", "nombre": "Ropa"},
+    7: {"categoria": "Orgánico", "nombre": "Residuos de café"},
+    8: {"categoria": "Inorgánico", "nombre": "Cubiertos de plástico desechables"},
+    9: {"categoria": "Orgánico", "nombre": "Cáscaras de huevo"},
+    10: {"categoria": "Orgánico", "nombre": "Residuos de comida"},
+    11: {"categoria": "Inorgánico", "nombre": "Botellas de vidrio para bebidas"},
+    12: {"categoria": "Inorgánico", "nombre": "Envases cosméticos de vidrio"},
+    13: {"categoria": "Inorgánico", "nombre": "Frascos de vidrio para alimentos"},
+    14: {"categoria": "Orgánico", "nombre": "Revistas"},
+    15: {"categoria": "Orgánico", "nombre": "Periódicos"},
+    16: {"categoria": "Orgánico", "nombre": "Papel de oficina"},
+    17: {"categoria": "Orgánico", "nombre": "Tazas de papel"},
+    18: {"categoria": "Inorgánico", "nombre": "Tapas de plástico para tazas"},
+    19: {"categoria": "Inorgánico", "nombre": "Botellas de detergente de plástico"},
+    20: {"categoria": "Inorgánico", "nombre": "Envases de plástico para alimentos"},
+    21: {"categoria": "Inorgánico", "nombre": "Bolsas de compras de plástico"},
+    22: {"categoria": "Inorgánico", "nombre": "Botellas de refresco de plástico"},
+    23: {"categoria": "Inorgánico", "nombre": "Popotes de plástico"},
+    24: {"categoria": "Inorgánico", "nombre": "Bolsas de basura de plástico"},
+    25: {"categoria": "Inorgánico", "nombre": "Botellas de agua de plástico"},
+    26: {"categoria": "Inorgánico", "nombre": "Zapatos"},
+    27: {"categoria": "Inorgánico", "nombre": "Latas de comida de acero"},
+    28: {"categoria": "Inorgánico", "nombre": "Tazas de unicel (poliestireno)"},
+    29: {"categoria": "Inorgánico", "nombre": "Envases de comida de unicel (poliestireno)"},
+    30: {"categoria": "Orgánico", "nombre": "Bolsas de té"}
 }
 
-ORGANIC_CLASSES = ["Cardboard", "Paper", "Food Waste"]
-INORGANIC_CLASSES = ["Plastic Bottle", "Glass Bottle", "Styrofoam"]
+def map_to_category(class_id):
+    mapping = CLASS_MAPPING.get(class_id)
+    if mapping is None:
+        return {"nombre": "Basura", "categoria": "Inorgánico"}
+    
+    return {
+        "nombre": mapping["nombre"], 
+        "categoria": mapping["categoria"]
+    }
+    
+def predict(image_tensor):
+    with torch.no_grad():
+        # inference
+        outputs = pt_model(image_tensor)
+        class_id = torch.argmax(outputs).item() # get class index
+    
+    # map class to category and name
+    return map_to_category(class_id)
