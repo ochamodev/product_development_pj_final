@@ -28,7 +28,7 @@ async def identify(image: UploadFile) -> Dict[str, str]:
     contents = await image.read()
     image_tensor = await preprocess_image(contents)
     result = predict(image_tensor)
-    output_path = f"uploaded_images/{image.filename}"
+    #output_path = f"uploaded_images/{image.filename}"
     #img = Image.open(BytesIO(contents))
     #img.save(output_path)
 
