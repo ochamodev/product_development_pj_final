@@ -10,7 +10,7 @@ COPY model/ ./model/
 COPY api/requirements.txt .
 
 # Instala las dependencias
-RUN pip install --upgrade pip && pip install --no-cache-dir --timeout=120 -r requirements.txt
+RUN pip install --upgrade pip && pip install --timeout=120 -r requirements.txt
 
 # Crea la carpeta para subir imágenes
 RUN mkdir -p /app/uploaded_images && chmod -R 777 /app/uploaded_images
