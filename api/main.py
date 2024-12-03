@@ -6,6 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict
 from preprocess import preprocess_image
 
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+import time
+import logging
+
+logging.basicConfig(filename="api_logs.log", level=logging.INFO, format="%(asctime)s - %(message)s")
+
+
 app = FastAPI()
 
 # Configurar CORS
@@ -21,6 +29,46 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start_time = time.time()
+    try:
+        response = await call_next(request)
+        duration = time.time() - start_time
+        log_message = {
+            "method": request.method,
+            "url": request.url.path,
+            "status_code": response.status_code,
+            "duration": f"{duration:.2f}s"
+        }
+        logging.info(f"SUCCESS: {log_message}")
+        return response
+    except Exception as e:
+        duration = time.time() - start_time
+        log_message = {
+            "method": request.method,
+            "url": request.url.path,
+            "error": str(e),
+            "duration": f"{duration:.2f}s"
+        }
+        logging.error(f"ERROR: {log_message}")
+        return JSONResponse(
+            status_code=500,
+            content={"message": "Internal Server Error"}
+        )
+@app.get("/logs")
+async def get_logs():
+    try:
+        with open("api_logs.log", "r") as log_file:
+            logs = log_file.readlines()
+        return {"logs": logs}
+    except FileNotFoundError:
+        return {"logs": []}
+
+@app.get("/error")
+async def raise_error():
+    raise ValueError("This is a test error!")
 
 @app.post("/identify")
 async def identify(image: UploadFile) -> Dict[str, str]:
