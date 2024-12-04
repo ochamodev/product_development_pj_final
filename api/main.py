@@ -3,8 +3,8 @@ from PIL import Image
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict
-from api.preprocess import preprocess_image
 from api.model_handle import predict as predict_pytorch
+from api.preprocess import preprocess_image
 from transformers import AutoFeatureExtractor, AutoModelForImageClassification
 import torch
 from fastapi import FastAPI, Request
