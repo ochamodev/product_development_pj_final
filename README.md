@@ -16,7 +16,7 @@ RecycAI es una aplicación que clasifica imágenes de residuos en **orgánicos**
 Backend de la aplicación, desarrollado con **FastAPI**. Aquí cargamos el modelo de clasificación y procesamos imágenes enviadas por los usuarios para devolver la categoría correspondiente ♻️
 
 ### 📁 `model/`
-El modelo de clasificación entrenado y listo para usar. Desplegamos dos modelos, uno basado en [CircularNet]([https://github.com/ochamodev/pd_app_ui/tree/main](https://github.com/tensorflow/models/tree/master/official/projects/waste_identification_ml)) y otro basado en [Garbage Classification](https://huggingface.co/yangy50/garbage-classification) 🤖
+El modelo de clasificación entrenado y listo para usar. Desplegamos dos modelos, uno basado en [CircularNet](https://github.com/tensorflow/models/tree/master/official/projects/waste_identification_ml) y otro basado en [Garbage Classification](https://huggingface.co/yangy50/garbage-classification) 🤖
 
 ### 📓 Notebooks
 Una colección de notebooks con pruebas de los modelos de clasificación 📊
@@ -47,7 +47,7 @@ El código fuente de la aplicación móvil creada en **Flutter** se encuentra en
    docker build -t recycai-api .
    docker run -p 8000:8000 recycai-api
    ```
-3. Accede a la API en: [http://localhost:8000/docs](http://localhost:8000/docs) para probar los endpoints 🌐
+3. Accede a la API en: [http://localhost:8000/](http://localhost:8000/) para probar los endpoints 🌐
 
 ### 3️⃣ Clasificación de Residuos
 Envía una imagen a través de la API para recibir la clasificación 📸
