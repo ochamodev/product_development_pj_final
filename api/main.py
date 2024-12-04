@@ -5,6 +5,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict
 from api.preprocess import preprocess_image
+from api.model_handle import predict
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -12,7 +13,6 @@ import time
 import logging
 
 logging.basicConfig(filename="api_logs.log", level=logging.INFO, format="%(asctime)s - %(message)s")
-
 
 app = FastAPI()
 
@@ -76,9 +76,6 @@ async def identify(image: UploadFile) -> Dict[str, str]:
     contents = await image.read()
     image_tensor = await preprocess_image(contents)
     result = predict(image_tensor)
-    #output_path = f"uploaded_images/{image.filename}"
-    #img = Image.open(BytesIO(contents))
-    #img.save(output_path)
 
     # Retornar la respuesta
     return result
