@@ -40,7 +40,7 @@ El código fuente de la aplicación móvil creada en **Flutter** se encuentra en
 ### 2️⃣ Ejecutar la API
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/recycai.git
+   git clone https://github.com/ochamodev/product_development_pj_final.git
    ```
 2. Construye y ejecuta el contenedor Docker:
    ```bash
