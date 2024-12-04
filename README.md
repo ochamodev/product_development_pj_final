@@ -15,11 +15,11 @@ RecycAI es una aplicación que clasifica imágenes de residuos en **orgánicos**
 ### 🖥️ `api/`
 Backend de la aplicación, desarrollado con **FastAPI**. Aquí cargamos el modelo de clasificación y procesamos imágenes enviadas por los usuarios para devolver la categoría correspondiente ♻️
 
-### 📓 Notebooks
-Una colección de notebooks que documentan el proceso de pruebas de los modelos de clasificación 📊
+### 📁 `model/`
+El modelo de clasificación entrenado y listo para usar. Desplegamos dos modelos, uno basado en [CircularNet]([https://github.com/ochamodev/pd_app_ui/tree/main](https://github.com/tensorflow/models/tree/master/official/projects/waste_identification_ml)) y otro basado en [Garbage Classification](https://huggingface.co/yangy50/garbage-classification) 🤖
 
-### 📁 `modelo_final/`
-El modelo de clasificación entrenado y listo para usar se encuentra en esta carpeta. Este modelo es la pieza central del sistema de predicción de residuos. 🤖
+### 📓 Notebooks
+Una colección de notebooks con pruebas de los modelos de clasificación 📊
 
 ### 🐳 `Dockerfile`
 Instrucciones para crear un contenedor Docker y desplegar la API 🛠️
