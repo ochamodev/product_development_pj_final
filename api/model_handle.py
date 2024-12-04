@@ -10,7 +10,7 @@ import tensorflow as tf
 absl.logging.set_verbosity(absl.logging.ERROR)
 
 # cargar modelo
-MODEL_PATH = "./model"
+MODEL_PATH = "../model"
 circularnet_model = tf.saved_model.load(MODEL_PATH)
 model_fn = circularnet_model.signatures["serving_default"]
 
